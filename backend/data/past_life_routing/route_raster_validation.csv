@@ -1,0 +1,7 @@
+site_id,method,distance_m,weighted_cost,steps,valid_route,blocked_cells,nodata_cells,invalid_corner_cuts,calculated_distance_m,calculated_weighted_cost,lower_cost_cell_count,moderate_cost_cell_count
+LIFE_001,shortest,2859.66,4531.61,126,True,0,0,0,2859.6551,4531.6147,109,18
+LIFE_001,terrain_aware,2918.23,3318.23,131,True,0,0,0,2918.2338,3318.2338,127,5
+LIFE_002,shortest,6592.69,14811.90,282,True,0,0,0,6592.6912,14811.9004,196,87
+LIFE_002,terrain_aware,7529.60,7529.60,345,True,0,0,0,7529.6046,7529.6046,346,0
+LIFE_003,shortest,9472.35,22147.43,409,True,0,0,0,9472.3463,22147.4343,276,134
+LIFE_003,terrain_aware,10071.51,10764.06,446,True,0,0,0,10071.5137,10764.0620,440,7
