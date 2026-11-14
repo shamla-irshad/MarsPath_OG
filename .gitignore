@@ -1,0 +1,10 @@
+backend/.venv/
+__pycache__/
+*.pyc
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+.DS_Store
+
+backend/data/sessions.sqlite3*
+.pytest_cache/

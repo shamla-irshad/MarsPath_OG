@@ -1,0 +1,30 @@
+{
+  "image": "jezero_ctx_web.png",
+  "width": 4441,
+  "height": 5058,
+  "worldFile": [
+    20.01051139934007,
+    0.0,
+    0.0,
+    -20.01102984729604,
+    4329202.113381661,
+    1143337.4186600742
+  ],
+  "radiusMeters": 3396190,
+  "standardParallelDegrees": 18.4663,
+  "centralMeridianDegrees": 0,
+  "crs": "Mars sphere equirectangular; supplied aux.xml; not the local Jezero ESRI:103885 parameterization",
+  "resolutionMeters": [
+    20.01051139934007,
+    20.01102984729604
+  ],
+  "source": "User supplied Past_Life_Web_Map.zip",
+  "instrument": "CTX according to supplied filename; original observation identifier/date not supplied",
+  "registration": "World file pixel-centre affine and XML projection. Site positions use supplied coordinates, whose source verification status is unchanged.",
+  "routing": "Regional 20 m cost raster and precomputed routes supplied separately. This imagery does not supply elevation for regional visor terrain.",
+  "hashes": {
+    "jezero_ctx_web.png": "a29595298cd0e1226d440cbaf2aa0762b207a5d23c7c389cdc34df1b663e4038",
+    "jezero_ctx_web.png.aux.xml": "1507246833edc5b796fc90cfd4ec82cc6518ca4d545fa6d22a955a561c6cc5e4",
+    "jezero_ctx_web.wld": "02d38d0b5295af7a2f7b5c6d9cfde0f569f77862b03222b2e590477c27d1f062"
+  }
+}
