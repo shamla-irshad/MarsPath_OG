@@ -1,0 +1,20 @@
+{
+  "observations": [],
+  "status": "no_observations_uploaded",
+  "isLive": false,
+  "warning": "No live EVA conditions, radiation dose prediction, or site-specific safety clearance is available.",
+  "references": [
+    {
+      "instrument": "Mars 2020 MEDA",
+      "site": "Jezero rover locations",
+      "url": "https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/PERSEVERANCE/meda.html",
+      "note": "Historical weather; its radiation/dust sensor is not an ionizing particle dosimeter."
+    },
+    {
+      "instrument": "MSL RAD",
+      "site": "Gale Crater",
+      "url": "https://pds-geosciences.wustl.edu/missions/msl/rad.htm",
+      "note": "Ionizing-radiation context measured at Gale, not Jezero."
+    }
+  ]
+}
