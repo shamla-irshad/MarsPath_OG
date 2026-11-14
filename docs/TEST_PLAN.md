@@ -20,7 +20,9 @@ After starting both servers, open http://127.0.0.1:5173 on a laptop/desktop brow
 Automated code checks:
 
 ```bash
-cd backend && python -m unittest discover -s tests -v
+# The suite uses pytest fixtures, so run it with pytest. `unittest discover`
+# silently collects 0 tests from the session, regional-route and science modules.
+cd backend && python -m pip install -r requirements-dev.txt && python -m pytest -v
 cd frontend && npm run typecheck && npm run build
 ```
 

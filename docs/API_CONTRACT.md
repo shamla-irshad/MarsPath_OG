@@ -98,6 +98,58 @@ Request:
 
 Response includes distance from closest route segment in meters and `offRoute` flag. This only works with **externally supplied manual or simulated position**; there is no live Mars location service.
 
+## GET /api/science/surface-images
+
+Documented NASA surface photography metadata. Never a live camera feed.
+
+```json
+{
+  "images": [
+    {
+      "id": "PIA23727",
+      "missionId": "rover-navigation-jezero",
+      "title": "Perseverance's first high-resolution Mastcam-Z panorama",
+      "mission": "Mars 2020 Perseverance",
+      "instrument": "Mastcam-Z right-eye zoom camera, 110 mm mosaic",
+      "sol": 4,
+      "observationDate": "2021-02-22",
+      "productId": "PIA23727",
+      "location": "Octavia E. Butler landing site, Jezero Crater",
+      "imageUrl": "https://…",
+      "sourceUrl": "https://science.nasa.gov/photojournal/…",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "matchLevel": "regional_context",
+      "matchedCandidateIds": [],
+      "note": "…"
+    }
+  ],
+  "matchingPolicy": "regional_context is NOT an image of the selected destination. Site matches require separately verified GIS evidence."
+}
+```
+
+`missionId` is `rover-navigation-jezero` or `past-life-jezero`. `matchLevel` is `regional_context`, `nearby_verified` or `site_verified`. Validation refuses a `site_verified` record with no `matchedCandidateIds`, and refuses a `regional_context` record that claims one, so the API cannot serve a photograph implying an unverified site match.
+
+## GET /api/environment/observations
+
+Historical environmental readings as context. No live EVA assessment and no radiation forecast exist.
+
+```json
+{
+  "observations": [],
+  "status": "no_observations_uploaded",
+  "isLive": false,
+  "warning": "No live EVA conditions, radiation dose prediction, or site-specific safety clearance is available.",
+  "references": [
+    {"instrument": "Mars 2020 MEDA", "site": "Jezero rover locations", "url": "…", "note": "…"},
+    {"instrument": "MSL RAD", "site": "Gale Crater", "url": "…", "note": "Ionizing radiation historical context measured at Gale, NOT Jezero."}
+  ]
+}
+```
+
+`status` is `historical_context_only` when readings exist and `no_observations_uploaded` when the bundled file is empty; `isLive` is always `false`. Allowed `metric` values: `air_temperature`, `ground_temperature`, `pressure`, `wind_speed`, `ionizing_radiation_dose_rate`. Every reading must carry `mission`, `instrument`, `location`, `unit`, `observationDate`, `productId` and `sourceUrl`, and `contextualOnly` is fixed `true`. An `ionizing_radiation_dose_rate` record is rejected unless `instrument` names RAD and `mission` names MSL or Curiosity, which prevents a Gale dose being relabelled as a Jezero one. Values must be finite.
+
+Both endpoints are read-only and served from `backend/data/science/`. The frontend reads the API first and falls back to the identical static snapshot at `frontend/public/data/science/` when the API is offline, labelling the panel accordingly; no reading or image is generated when neither source is available.
+
 ## API availability and frontend behavior
 
 `frontend/.env.example` points to `http://127.0.0.1:8000`. When the API is offline, the frontend loads the bundled candidates manifest for discovery only and **disables routing**. No fake route is returned on backend failure.
