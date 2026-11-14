@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import type {Page} from '../types';
 import {MISSIONS} from '../types';
 import {Icon, PrimaryButton} from '../components/ui';
@@ -10,24 +11,53 @@ const STEPS = [
 ];
 
 export function Home({go, onSelectMission}: {go: (p: Page) => void; onSelectMission: (id: (typeof MISSIONS)[number]['id']) => void}) {
+  // Reveal sections only as they come into view. The reduced-motion stylesheet
+  // explicitly bypasses these effects for people who disable animation.
+  useEffect(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    if (!('IntersectionObserver' in window)) {
+      nodes.forEach(node => node.classList.add('reveal-visible'));
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-visible');
+          observer.unobserve(entry.target);
+        }
+      }
+    }, {threshold: 0.12, rootMargin: '0px 0px -30px 0px'});
+    nodes.forEach(node => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main id="main-content" tabIndex={-1} className="home-page">
-      <section className="hero">
+      <section className="hero" aria-labelledby="hero-title">
+        <img className="hero-image" src="/data/landing_area_ortho_preview.png" alt="" fetchPriority="high" />
+        <div className="hero-wash" aria-hidden="true" />
+        <div className="hero-orbital" aria-hidden="true"><i /><i /><i /></div>
         <div className="hero-content">
-          <h1>Explore Mars with purpose.</h1>
+          <div className="hero-eyebrow"><span className="hero-eyebrow-dot" /> NASA SPACE APPS · TEAM ORBIT GUARDIANS</div>
+          <h1 id="hero-title">Explore Mars <span>with purpose.</span></h1>
           <p className="hero-lead">
             Explore scientific destinations, examine Martian terrain, investigate NASA-derived data and plan future surface exploration missions.
           </p>
           <div className="hero-actions">
-            <PrimaryButton size="lg" onClick={() => go('discover')}>Explore Mars</PrimaryButton>
-            <a className="text-link" href="#how-it-works">How MarsPath works</a>
+            <PrimaryButton size="lg" onClick={() => go('discover')}>Explore Mars <Icon name="arrow" size={19}/></PrimaryButton>
+            <a className="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+          </div>
+          <div className="hero-trust" aria-label="Project dataset overview">
+            <div><strong>03</strong><span>MISSION OBJECTIVES</span></div>
+            <div><strong>09</strong><span>GIS CANDIDATES</span></div>
+            <div><strong>401 × 401</strong><span>LOCAL ROUTING GRID</span></div>
           </div>
         </div>
-        <img className="hero-image" src="/data/landing_area_ortho_preview.png" alt="Orbital view of the Jezero Crater landing area" />
-        <p className="hero-credit">Image: local Jezero orbital preview supplied with the project.</p>
+        <div className="hero-image-tag" aria-hidden="true"><b>01 / LOCAL TERRAIN</b><span>JEZERO CRATER · ORBITAL PREVIEW</span></div>
+        <p className="hero-credit">Original Jezero orbital preview supplied with the project · science imagery, color-treated for this hero only.</p>
       </section>
 
-      <section className="section" id="how-it-works">
+      <section className="section" id="how-it-works" data-reveal>
         <h2>How it works</h2>
         <ol className="steps-grid">
           {STEPS.map((step, i) => (
@@ -40,7 +70,7 @@ export function Home({go, onSelectMission}: {go: (p: Page) => void; onSelectMiss
         </ol>
       </section>
 
-      <section className="section section-alt" aria-labelledby="missions-heading">
+      <section className="section section-alt" aria-labelledby="missions-heading" data-reveal>
         <h2 id="missions-heading">Scientific missions</h2>
         <p className="section-lead">Pick a mission to see its candidate locations.</p>
         <div className="mission-cards">
@@ -56,7 +86,7 @@ export function Home({go, onSelectMission}: {go: (p: Page) => void; onSelectMiss
         </div>
       </section>
 
-      <section className="section" id="about">
+      <section className="section" id="about" data-reveal>
         <h2>About MarsPath</h2>
         <div className="about-grid">
           <div>

@@ -61,6 +61,21 @@ export function Compare({go, missionId, candidates, candidate, destination, resp
                     <LabeledMetric label="Terrain-cost score" value={formatNumber(r.metrics.traversalCost, 0)} />
                     <LabeledMetric label="Higher-cost terrain" value={`${formatNumber(r.metrics.highCostExposurePercent)}%`} />
                   </div>
+                  <div className="route-visual-metrics" aria-label="Relative route metrics">
+                    <div className="route-visual-row">
+                      <span>Route distance</span>
+                      <div className="route-bar" role="img" aria-label={`Distance ${formatNumber(r.metrics.distanceMeters, 0)} metres`}>
+                        <i style={{width: `${100 * r.metrics.distanceMeters / Math.max(1, ...routes.map(v => v.metrics.distanceMeters))}%`}} />
+                      </div>
+                    </div>
+                    <div className="route-visual-row">
+                      <span>Modeled cost</span>
+                      <div className="route-bar route-bar-cost" role="img" aria-label={`Modeled cost ${formatNumber(r.metrics.traversalCost, 0)}`}>
+                        <i style={{width: `${100 * r.metrics.traversalCost / Math.max(1, ...routes.map(v => v.metrics.traversalCost))}%`}} />
+                      </div>
+                    </div>
+                    <small>Bars compare the displayed route options, not astronaut safety.</small>
+                  </div>
                 </button>
               ))}
             </div>
