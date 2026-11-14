@@ -98,8 +98,8 @@ export function TerrainProfile({route}:{route:Route}) {
         <svg className="profile-svg" viewBox="0 0 760 250" role="img" aria-label={`${mode==='e'?'Elevation in metres':'Slope in degrees'} plotted against distance along the planned route in metres`}>
           <defs>
             <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={mode==='e'?'#62e7d9':'#b9a6ff'} stopOpacity=".42"/>
-              <stop offset="100%" stopColor={mode==='e'?'#62e7d9':'#b9a6ff'} stopOpacity=".015"/>
+              <stop offset="0%" stopColor={mode==='e'?'#c7baa2':'#a6c9bf'} stopOpacity=".42"/>
+              <stop offset="100%" stopColor={mode==='e'?'#c7baa2':'#a6c9bf'} stopOpacity=".015"/>
             </linearGradient>
           </defs>
           {[0,.25,.5,.75,1].map((f,i)=>{
@@ -107,9 +107,9 @@ export function TerrainProfile({route}:{route:Route}) {
             return <g key={i} className="profile-gridline"><line x1={L} y1={yy} x2={R} y2={yy}/><text x={L-12} y={yy+4} textAnchor="end">{formatNumber(value,mode==='s'?1:0)}{unit}</text></g>;
           })}
           {areas.map((path,i)=><path key={i} d={path} fill={`url(#${gradientId})`} />)}
-          <path d={line} fill="none" stroke={mode==='e'?'#62e7d9':'#b9a6ff'} strokeWidth="9" strokeOpacity=".12" strokeLinejoin="round" />
-          <path d={line} fill="none" stroke={mode==='e'?'#62e7d9':'#b9a6ff'} strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round" />
-          {focusValue!==null&&<g><line className="profile-focus-line" x1={x(focus.distance)} y1={T} x2={x(focus.distance)} y2={B}/><circle cx={x(focus.distance)} cy={y(focusValue)} r="6" fill={mode==='e'?'#62e7d9':'#b9a6ff'} stroke="#09152d" strokeWidth="3" /></g>}
+          <path d={line} fill="none" stroke={mode==='e'?'#c7baa2':'#a6c9bf'} strokeWidth="9" strokeOpacity=".12" strokeLinejoin="round" />
+          <path d={line} fill="none" stroke={mode==='e'?'#c7baa2':'#a6c9bf'} strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round" />
+          {focusValue!==null&&<g><line className="profile-focus-line" x1={x(focus.distance)} y1={T} x2={x(focus.distance)} y2={B}/><circle cx={x(focus.distance)} cy={y(focusValue)} r="6" fill={mode==='e'?'#c7baa2':'#a6c9bf'} stroke="#0a2630" strokeWidth="3" /></g>}
           {[0,.25,.5,.75,1].map((f,i)=><text className="profile-x-label" key={i} x={L+f*(R-L)} y={B+25} textAnchor={i===0?'start':i===4?'end':'middle'}>{formatNumber(distance*f,0)}m</text>)}
         </svg>
         <div className="profile-inspector">
