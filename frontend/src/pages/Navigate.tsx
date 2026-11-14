@@ -3,6 +3,7 @@ import PlaybackSpeed from '../PlaybackSpeed';
 import {useEffect, useState} from 'react';
 import HeadingMonitor from '../HeadingMonitor';
 import VisorView from '../VisorView';
+import {EnvironmentalPanel,SurfacePhotoView} from '../components/ScientificContext';
 import MapView, {nearestRouteDistance, positionAt} from '../MapView';
 import {TerrainReadout} from '../Terrain';
 import {formatNumber, getCell} from '../api';
@@ -30,7 +31,7 @@ function guidance(route:Route|undefined,progress:number,manual:boolean,position?
  return {turn:`Follow bearing ${bearing} toward destination`,distance:Math.round(route.metrics.distanceMeters*(1-progress/100)),bearing,sub:'No major route turn detected ahead'};
 }
 export function Navigate({go,missionId,candidates,candidate,destination,route,progress,setProgress,completed,setCompleted,layers,setLayers}:{go:(p:Page)=>void;missionId:MissionId;candidates:Candidate[];candidate:Candidate|null;destination:Point;route:Route|null;progress:number;setProgress:(n:number)=>void;completed:boolean;setCompleted:(n:boolean)=>void;layers:LayerFlags;setLayers:(l:LayerFlags)=>void}){
- const [walking,setWalking]=useState(false),[walkHeading,setWalkHeading]=useState(0),[speed,setSpeed]=useState(60);const [view,setView]=useState<'orbital'|'visor'>('orbital');const [dismissedWarning,setDismissedWarning]=useState('');
+ const [walking,setWalking]=useState(false),[walkHeading,setWalkHeading]=useState(0),[speed,setSpeed]=useState(60);const [view,setView]=useState<'orbital'|'visor'|'photo'>('orbital');const [dismissedWarning,setDismissedWarning]=useState('');
  const [status,setStatus]=useState<'ready'|'running'|'paused'|'stopped'>('ready'),[mode,setMode]=useState<'simulation'|'manual'|'future'>('simulation'),[follow,setFollow]=useState(false),[deviationDemo,setDeviationDemo]=useState(false),[manual,setManual]=useState<Point|null>(null),[manualRow,setManualRow]=useState(''),[manualCol,setManualCol]=useState(''),[manualError,setManualError]=useState(''),[stopConfirm,setStopConfirm]=useState(false),[terrainCost,setTerrainCost]=useState<number|null>(null);
  useEffect(()=>{if(status!=='running'||mode!=='simulation'||progress>=100||!route?.metrics.distanceMeters)return;const t=window.setInterval(()=>setProgress(Math.min(100,progress+(22/60)*speed*.25/route.metrics.distanceMeters*100)),250);return ()=>window.clearInterval(t);},[status,mode,progress,setProgress,route,speed]);
  useEffect(()=>{if(progress>=100&&!completed){setCompleted(true);setStatus('stopped')}},[progress,completed,setCompleted]);
@@ -61,6 +62,7 @@ export function Navigate({go,missionId,candidates,candidate,destination,route,pr
      <div className="view-switch" role="group" aria-label="Navigation view">
       <button type="button" aria-pressed={view==='orbital'} onClick={()=>setView('orbital')}>Orbital map</button>
       <button type="button" aria-pressed={view==='visor'} disabled={!route||mode==='future'} onClick={()=>setView('visor')}>Visor simulation</button>
+      <button type="button" aria-pressed={view==='photo'} onClick={()=>setView('photo')}>Surface photo · NASA</button>
      </div>
      <div className="navigation-surface" style={{display:view==='orbital'?'flex':'none'}}>
       <MapView
@@ -82,6 +84,7 @@ export function Navigate({go,missionId,candidates,candidate,destination,route,pr
       />
      </div>
      {view==='visor'&&<VisorView route={route} progress={progress} position={current} manual={mode!=='simulation'} travelHeading={walking?walkHeading:undefined}/>}
+     {view==='photo'&&<SurfacePhotoView missionId={missionId} candidateId={candidate?.id}/>} 
     </div>
 
     <aside className="nav-sidebar" aria-label="Navigation guidance"><section className="panel-section">{route&&<button className="btn btn-outline" aria-pressed={walking} onClick={()=>{setWalking(v=>!v);setStatus('paused');setMode(walking?'simulation':'manual');if(!walking)setManual(current||route.geometry[0])}}>{walking?'Return to route preview':'Explore manually · walk controls'}</button>}{walking&&route&&current&&<WalkSimulator route={route} position={current} onPosition={setManual} onHeading={setWalkHeading}/>}<PlaybackSpeed value={speed} onChange={setSpeed} disabled={mode!=='simulation'}/></section>
@@ -146,6 +149,7 @@ export function Navigate({go,missionId,candidates,candidate,destination,route,pr
 
      <HeadingMonitor bearing={parseFloat(text.bearing)||0} active={!!route&&!completed&&mode!=='future'&&!walking} onWarning={()=>setStatus('paused')}/>
      <TerrainReadout point={current}/>
+     <EnvironmentalPanel missionId={missionId} compact/>
 
      <div className="nav-control-buttons">
       <PrimaryButton disabled={!route||completed||mode!=='simulation'} onClick={()=>setStatus(s=>s==='running'?'paused':'running')}>{status==='running'?'Pause':status==='paused'?'Resume':'Start'}</PrimaryButton>

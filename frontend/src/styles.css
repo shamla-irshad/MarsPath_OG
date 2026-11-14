@@ -2310,3 +2310,32 @@ a { color: var(--info); }
 
 .mission-record{background:white;color:black;border-color:#aaa}.observations textarea,.observation-meta,.observations button{display:none}
 }
+
+/* MarsPath map zoom clarity patch — geographic mapping stays unchanged. */
+.map-world {
+  transition: transform 150ms cubic-bezier(.22,.8,.25,1);
+}
+.mars-map-shell.is-panning .map-world {
+  transition: none;
+}
+.map-image {
+  /* Image texture is smoothly resampled; no invented resolution. */
+  image-rendering: auto;
+}
+.map-screen-route-main,
+.map-screen-route-alt {
+  /* Narrower strokes at detailed zoom are set from MapView camera state. */
+  transition: stroke-width 120ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-world,
+  .map-screen-route-main,
+  .map-screen-route-alt { transition: none !important; }
+}
+
+/* Routes share the same vector camera as the image; thin strokes stay legible. */
+.map-geometries .map-screen-route-main,
+.map-geometries .map-screen-route-alt {
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}

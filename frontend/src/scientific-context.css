@@ -1,0 +1,47 @@
+/* Additive scientific overlays. Uses the current MarsPath theme's variables so
+   this patch works with both the Sapphire and Deep Teal palettes. */
+.science-photo-view,.science-environment { width:100%;padding:20px;border:1px solid var(--border, #39565d);border-radius:14px;background:var(--surface, #193e45);color:var(--text, #e7eeec); }
+.science-panel-heading {display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.science-panel-heading h2 {font-size:1.2rem;line-height:1.2;margin:4px 0 0;color:var(--text,#e7eeec)}
+.science-eyebrow {font-size:.64rem;letter-spacing:.15em;font-weight:700;color:var(--accent,#d6c1a4)}
+.science-status-tag {background:rgba(220,193,149,.13);border:1px solid rgba(220,193,149,.45);border-radius:40px;color:#ead6b2;white-space:nowrap;padding:6px 9px;font-size:.7rem;font-weight:700}
+.science-photo-view {flex:1;min-height:400px;overflow:auto;align-self:stretch;border-radius:0;}
+.science-photo-frame {position:relative;background:#101c22;overflow:hidden;border:1px solid rgba(223,235,229,.12);border-radius:12px;min-height:210px;}
+.science-photo-frame img {display:block;width:100%;max-height:min(49vh,530px);min-height:225px;object-fit:contain;background:#111c22;}
+.science-photo-label {position:absolute;bottom:12px;left:12px;padding:8px 11px;border-radius:7px;background:rgba(8,23,28,.87);border:1px solid rgba(240,232,209,.4);color:#eae6d9;font-size:.76rem;font-weight:700;}
+.science-photo-fallback {padding:40px 20px;text-align:center;}
+.science-photo-details h3 {font-size:1.1rem;margin:16px 0 8px;color:var(--text,#f1f2ef)}
+.science-photo-details p {line-height:1.55;font-size:.9rem;margin:7px 0;}
+.science-photo-facts {display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.science-photo-facts span {padding:8px 10px;border-radius:8px;background:rgba(160,185,186,.10);border:1px solid var(--border,#3a5b60);font-size:.78rem}
+.science-photo-facts b {color:var(--text-muted,#bdc9cd);margin-right:3px}
+.science-photo-credit {font-size:.8rem!important;color:var(--text-muted,#bac8cc);}
+.science-photo-credit a,.science-photo-fallback a,.science-environment-card a,.science-context-references a {color:var(--accent,#e5d2a8);text-decoration:underline;text-underline-offset:3px}
+.science-muted {color:var(--text-muted,#b9c8ca);font-size:.82rem;line-height:1.6;}
+.science-scientific-warning {padding:10px 12px;border-left:3px solid #dbc49d;background:rgba(219,196,157,.10);color:var(--text,#e7eeec);border-radius:0 8px 8px 0;font-size:.84rem;line-height:1.5;}
+.science-environment {margin:14px 0;}
+.science-environment-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.science-environment-card {min-width:0;display:grid;gap:6px;border:1px solid var(--border,#3f595b);background:var(--surface-2,#193e45);padding:13px;border-radius:10px;}
+.science-environment-card>span {font-size:.78rem;color:var(--text-muted,#c5cfcb);font-weight:650}
+.science-environment-card>strong {font-size:1.03rem;color:var(--text,#f3f0ea);font-weight:750}
+.science-environment-card>strong small {font-size:.7rem}
+.science-environment-card>.science-no-reading {font-size:.91rem;color:#ebd9b9}
+.science-environment-card>small {overflow-wrap:anywhere;font-size:.72rem;color:var(--text-muted,#b9c8ca);line-height:1.4}
+.science-environment-card a {font-size:.73rem;}
+.science-communications {display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid var(--border,#3a5b60);padding:13px 0;font-size:.81rem}
+.science-communications span {color:var(--text-muted,#b9c8ca);text-align:right}
+.science-context-references {font-size:.78rem;color:var(--text-muted,#b9c8ca);}
+.science-context-references summary {cursor:pointer;color:var(--text,#e7eeec);font-weight:600;padding:8px 0;}
+.science-context-references a {display:block;margin:8px 0}
+.science-environment-compact {padding:15px;margin:0;border:0;border-radius:0;background:transparent;}
+.science-environment-compact .science-environment-grid {grid-template-columns:1fr 1fr;gap:7px}
+.science-environment-compact .science-environment-card {padding:10px}
+.science-environment-compact .science-status-tag {font-size:.61rem}
+@media (max-width:650px) {
+ .science-environment-grid {grid-template-columns:1fr 1fr;gap:8px}
+ .science-photo-view {padding:12px;min-height:320px}
+ .science-panel-heading {flex-wrap:wrap}
+ .science-photo-label {font-size:.68rem}
+ .science-environment-compact .science-environment-grid {grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce) { .science-photo-view *, .science-environment * {animation:none!important;transition:none!important;} }

@@ -8,6 +8,7 @@ import {MISSIONS} from '../types';
 import type {Candidate, LayerFlags, MarsCoordinates, MissionId, Page, Point, RouteKind, RouteResponse, StartMode} from '../types';
 import {PageHeader, PrimaryButton, Status} from '../components/ui';
 import {ScienceDetails} from '../components/ScienceDetails';
+import {EnvironmentalPanel} from '../components/ScientificContext';
 
 export function Explorer({go,missionId,candidates,candidate,choose,clearCandidate,routeResponse,setRouteResponse,destination,setDestination,routeChoice,setRouteChoice,layers,setLayers,apiReady,budgetMinutes,setBudgetMinutes,scienceMinutes,setScienceMinutes,startMode,setStartMode,manualLat,setManualLat,manualLon,setManualLon}: {
  go:(p:Page)=>void;missionId:MissionId;candidates:Candidate[];candidate:Candidate|null;
@@ -260,6 +261,7 @@ export function Explorer({go,missionId,candidates,candidate,choose,clearCandidat
       ):<div className="empty-state">Select a candidate, or select an open point on the Jezero map.</div>}
      </section>
      {isRover&&<TerrainReadout point={destination}/>}
+     <EnvironmentalPanel missionId={missionId} compact/>
     </aside>
    </div>
   </main>
