@@ -31,11 +31,15 @@ Request:
   "objective": "Rover Navigation",
   "startMode": "butler",
   "destination": { "row": 56, "col": 370 },
+<<<<<<< HEAD
   "candidateId": "JEZERO_A",
   "evaBudgetMinutes": 90,
   "scienceStopMinutes": 10,
   "intermediateScienceStopMinutes": 10,
   "returnReserveMinutes": 15
+=======
+  "candidateId": "JEZERO_A"
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 }
 ```
 
@@ -67,9 +71,15 @@ Successful response shape:
 }
 ```
 
+<<<<<<< HEAD
 **The numbers and two-point geometry in the response example above are illustrative schema examples, not actual server outputs.** Actual server response contains complete A* paths for `shortest`, `lower`, and `balanced` when reachable, plus independently calculated return paths and a resource assessment.
 
 Algorithm: 8-connected grid, diagonal distance is `5√2 m`, orthogonal distance `5 m`, no diagonal corner cutting through blocked cells. `shortest` optimizes geometric distance; `lower` optimizes distance × destination-cell cost (1 or 5); `balanced` additionally applies a slope penalty from the supplied 1 m slope raster sampled at 5 m cell centers, with a penalty for unknown slope samples. All use an admissible octile heuristic because movement multipliers are at least one. Weighted traversal cost has *model distance-cost units*, not physical energy or a safety probability. The slope weighting is illustrative and not a validated human mobility threshold. Resource estimates use illustrative oxygen/battery rates and are not suit telemetry. Return paths are optimized separately and are not guaranteed safe.
+=======
+**The numbers and two-point geometry in the response example above are illustrative schema examples, not actual server outputs.** Actual server response contains complete A* paths for both `shortest` and `lower` when reachable.
+
+Algorithm: 8-connected grid, diagonal distance is `5√2 m`, orthogonal distance `5 m`, no diagonal corner cutting through blocked cells. Shortest optimizes geometric distance; lower cost optimizes distance × destination-cell cost (1 or 5). Both use an admissible octile heuristic. Weighted traversal cost has *model distance-cost units*, not physical energy or a safety probability.
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
 Errors: 422 for blocked/unknown cells, unsupported missions, invalid/missing manual Mars coordinates, out-of-grid starts, start-mode mismatch, candidate/destination mismatch and same start/end. 404 if no route is reachable. Pydantic returns 422 for coordinates outside 0–400.
 
@@ -132,8 +142,11 @@ A session records what the user chose and how far the *simulation* reached. A st
 ```json
 {"text":"Loose blocky material on the north rim","location":{"row":210,"col":215}}
 ```
+<<<<<<< HEAD
 
 
 ## Risk-aware route response additions
 
 Each Jezero route includes sampled `averageSlopeDegrees`, `maximumSlopeDegrees`, and `unknownSlopeDistanceMeters`. `returnRoute` contains a separately planned return geometry and metrics. `resourceAssessment` includes outbound/return/science time, EVA budget, protected return reserve, illustrative oxygen and battery percentages, and a budget status. Optional request fields are `evaBudgetMinutes` (90), `scienceStopMinutes` (destination dwell, 10), `intermediateScienceStopMinutes` (10), and `returnReserveMinutes` (15).
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b

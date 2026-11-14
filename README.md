@@ -8,7 +8,11 @@ MarsPath is a research prototype for planning a Mars surface excursion. It layer
 
 | Mission | Region | Capability |
 |---|---|---|
+<<<<<<< HEAD
 | Rover Navigation | Jezero Crater | Compare shortest, lower-terrain-cost and slope-aware balanced routes on a 401 × 401 (5 m) grid; estimate separate return routes and illustrative EVA resources |
+=======
+| Rover Navigation | Jezero Crater | Compare terrain; shortest and lower-terrain-cost routes on a 401 × 401 (5 m) grid |
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 | Water-Ice Exploration | Arcadia Planitia | Compare SWIM ice-consistency evidence (science only) |
 | Past-Life Exploration | Jezero Crater | Documented sample sites; regional (20 m) route model |
 

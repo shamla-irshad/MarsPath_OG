@@ -60,15 +60,21 @@ export function Summary({go, onNewMission, missionId, candidate, destination, ro
                 <LabeledMetric label="Distance" value={`${formatNumber(route.metrics.distanceMeters, 0)} m`} />
                 <LabeledMetric label="Estimated time" value={`${formatNumber(route.metrics.estimatedMinutes, 1)} min`} />
                 <LabeledMetric label="Terrain-cost score" value={formatNumber(route.metrics.traversalCost, 0)} />
+<<<<<<< HEAD
                 <LabeledMetric label="Maximum sampled slope" value={route.metrics.maximumSlopeDegrees==null?'Unavailable':`${formatNumber(route.metrics.maximumSlopeDegrees)}°`} />
                 <LabeledMetric label="Return route" value={route.returnRoute?`${formatNumber(route.returnRoute.metrics.distanceMeters,0)} m`:'Not calculated'} />
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
                 <LabeledMetric label="Simulation progress" value={`${formatNumber(progress, 0)}%`} />
                 <LabeledMetric label="Mission time budget" value={`${budgetMinutes} min`} />
                 <LabeledMetric label="Science time allowance" value={`${scienceMinutes} min`} />
               </div>
               <TerrainProfile route={route} />
               <MissionTimeline route={route} scienceMinutes={scienceMinutes} budgetMinutes={budgetMinutes} />
+<<<<<<< HEAD
               {route.resourceAssessment&&<p>Round-trip estimate: {formatNumber(route.resourceAssessment.estimatedRoundTripMinutes,1)} min. Resource status: {route.resourceAssessment.status}. This is a simulation, not actual suit telemetry.</p>}
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
               <Status kind={completed ? 'success' : 'warn'}>
                 {completed ? 'The simulated route reached its destination.' : 'The simulation was not completed. It must not be reported as a successful Marswalk.'}
               </Status>

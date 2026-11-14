@@ -23,7 +23,10 @@ type Props = {
 const ROUTE_ADVICE: Record<RouteKind, string> = {
   shortest: 'Choose this when walking distance matters most. It may cross more higher-cost cells.',
   lower: 'Choose this when avoiding the model\u2019s higher-cost cells matters more, even if the walk is longer.',
+<<<<<<< HEAD
   balanced: 'Balances the supplied terrain-cost classes with sampled slope penalties. It is an illustrative risk model, not a certified safety score.',
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 };
 
 export function Compare({go, missionId, candidates, candidate, destination, response, choice, setChoice, layers, setLayers, budgetMinutes, scienceMinutes}: Props) {
@@ -35,7 +38,11 @@ export function Compare({go, missionId, candidates, candidate, destination, resp
   return (
     <main id="main-content" tabIndex={-1} className="page-main full-width">
       <PageHeader title="Compare routes">
+<<<<<<< HEAD
         Compare three planning objectives: shortest distance, lower terrain cost, and a slope-aware balanced route. None is a guarantee of astronaut safety.
+=======
+        Both routes use the same terrain-cost grid. One minimises distance; the other minimises the project&apos;s terrain-cost score. Neither route is a guarantee of safety.
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
       </PageHeader>
 
       {!routes.length ? (
@@ -61,9 +68,27 @@ export function Compare({go, missionId, candidates, candidate, destination, resp
                     <LabeledMetric label="Estimated time" value={`${formatNumber(r.metrics.estimatedMinutes, 1)} min`} />
                     <LabeledMetric label="Terrain-cost score" value={formatNumber(r.metrics.traversalCost, 0)} />
                     <LabeledMetric label="Higher-cost terrain" value={`${formatNumber(r.metrics.highCostExposurePercent)}%`} />
+<<<<<<< HEAD
                     <LabeledMetric label="Average sampled slope" value={r.metrics.averageSlopeDegrees==null?'Unavailable':`${formatNumber(r.metrics.averageSlopeDegrees)}°`} />
                     <LabeledMetric label="Maximum sampled slope" value={r.metrics.maximumSlopeDegrees==null?'Unavailable':`${formatNumber(r.metrics.maximumSlopeDegrees)}°`} />
                     <LabeledMetric label="Unknown-slope distance" value={`${formatNumber(r.metrics.unknownSlopeDistanceMeters||0,0)} m`} />
+=======
+                  </div>
+                  <div className="route-visual-metrics" aria-label="Relative route metrics">
+                    <div className="route-visual-row">
+                      <span>Route distance</span>
+                      <div className="route-bar" role="img" aria-label={`Distance ${formatNumber(r.metrics.distanceMeters, 0)} metres`}>
+                        <i style={{width: `${100 * r.metrics.distanceMeters / Math.max(1, ...routes.map(v => v.metrics.distanceMeters))}%`}} />
+                      </div>
+                    </div>
+                    <div className="route-visual-row">
+                      <span>Modeled cost</span>
+                      <div className="route-bar route-bar-cost" role="img" aria-label={`Modeled cost ${formatNumber(r.metrics.traversalCost, 0)}`}>
+                        <i style={{width: `${100 * r.metrics.traversalCost / Math.max(1, ...routes.map(v => v.metrics.traversalCost))}%`}} />
+                      </div>
+                    </div>
+                    <small>Bars compare the displayed route options, not astronaut safety.</small>
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
                   </div>
                 </button>
               ))}
@@ -78,11 +103,16 @@ export function Compare({go, missionId, candidates, candidate, destination, resp
                   and reduces the terrain-cost score by {formatNumber(a.metrics.traversalCost - b.metrics.traversalCost, 0)}. Higher-cost terrain falls from {formatNumber(a.metrics.highCostExposurePercent)}% to {formatNumber(b.metrics.highCostExposurePercent)}% of the route.
                 </p>
               )}
+<<<<<<< HEAD
               <p>The shortest route minimises length. The lower-cost route minimises length multiplied by the existing cell cost. The balanced route also applies an illustrative penalty to sampled slope and missing slope data. These are planning scores, not measured energy use, radiation exposure or validated human mobility limits.</p>
+=======
+              <p>The shortest route minimises length. The lower-cost route minimises length multiplied by cell cost (1 or 5). The terrain-cost score is a model value, not measured energy use or radiation exposure. The 22 m/min walking speed is a demonstration assumption.</p>
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
             </section>
 
             {selected && <TerrainProfile route={selected} />}
             {selected && <MissionTimeline route={selected} scienceMinutes={scienceMinutes} budgetMinutes={budgetMinutes} />}
+<<<<<<< HEAD
             {selected?.resourceAssessment && <section className="why-panel">
               <h2>Round-trip and astronaut resource planning</h2>
               <div className="route-stat-grid">
@@ -95,6 +125,8 @@ export function Compare({go, missionId, candidates, candidate, destination, resp
               <p><strong>{selected.resourceAssessment.status}</strong> against the configured EVA budget.</p>
               <p>These are transparent simulation assumptions, not actual spacesuit telemetry or a validated life-support model.</p>
             </section>}
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
             <div className="action-row">
               <PrimaryButton outline onClick={() => go('map')}>Back to Explorer</PrimaryButton>

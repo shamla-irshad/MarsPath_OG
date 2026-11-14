@@ -21,7 +21,11 @@ class MarsPathAPITests(unittest.TestCase):
             response = self.client.post('/api/routes/generate', json={"destination": {"row": target[0], "col": target[1]}, "missionId": "rover-navigation-jezero"})
             self.assertEqual(response.status_code, 200, response.text)
             routes = response.json()['routes']
+<<<<<<< HEAD
             self.assertEqual([r['id'] for r in routes], ['shortest', 'lower', 'balanced'])
+=======
+            self.assertEqual([r['id'] for r in routes], ['shortest', 'lower'])
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
             for route in routes:
                 self.assertEqual(route['geometry'][0], {"row": 200, "col": 200})
                 self.assertEqual(route['geometry'][-1], {"row": target[0], "col": target[1]})
@@ -58,7 +62,11 @@ class MarsPathAPITests(unittest.TestCase):
             })
             self.assertEqual(result.status_code,200,result.text)
             self.assertIsNone(result.json()['candidateId'])
+<<<<<<< HEAD
             self.assertEqual(len(result.json()['routes']),3)
+=======
+            self.assertEqual(len(result.json()['routes']),2)
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
             for option in result.json()['routes']:
                 self.assertEqual(option['geometry'][0],{'row':200,'col':200})
                 self.assertEqual(option['geometry'][-1],{'row':row,'col':col})
@@ -76,6 +84,7 @@ class MarsPathAPITests(unittest.TestCase):
         self.assertFalse(on['offRoute'])
         self.assertTrue(off['offRoute'])
 
+<<<<<<< HEAD
     def test_balanced_route_includes_slope_return_and_resource_assessment(self):
         response = self.client.post('/api/routes/generate', json={
             'missionId': 'rover-navigation-jezero',
@@ -99,3 +108,7 @@ class MarsPathAPITests(unittest.TestCase):
 if __name__=='__main__':
     unittest.main()
 
+=======
+if __name__=='__main__':
+    unittest.main()
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b

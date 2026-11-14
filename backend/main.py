@@ -15,9 +15,12 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
+<<<<<<< HEAD
 import numpy as np
 import rasterio
 
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 from fastapi import FastAPI, HTTPException
 from past_life_routes import router as past_life_router
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,8 +31,11 @@ GRID_PATH = Path(os.getenv("MARSPATH_GRID", str(DATA_DIR / "navigation_grid.json
 MANIFEST_PATH = DATA_DIR / "gis" / "candidates_manifest.json"
 MARS_RADIUS_M = 3396190.0
 ROVER_MISSION = "rover-navigation-jezero"
+<<<<<<< HEAD
 DEM_PATH = DATA_DIR / "terrain_original" / "landing_area_dem_1m.tif"
 SLOPE_PATH = DATA_DIR / "terrain_original" / "landing_area_slope_degrees.tif"
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 MISSIONS = ("rover-navigation-jezero", "water-ice-arcadia", "past-life-jezero")
 ESTIMATED_WALK_M_PER_MIN = 22.0  # modeling assumption, not certified EVA speed
 
@@ -86,10 +92,13 @@ class RouteRequest(BaseModel):
     missionId: str = ROVER_MISSION
     candidateId: str | None = None
     scienceStopIds: list[str] = Field(default_factory=list, max_length=3)
+<<<<<<< HEAD
     evaBudgetMinutes: float = Field(default=90, ge=15, le=600)
     scienceStopMinutes: float = Field(default=10, ge=0, le=180)
     intermediateScienceStopMinutes: float = Field(default=10, ge=0, le=120)
     returnReserveMinutes: float = Field(default=15, ge=0, le=180)
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
 
 class DeviationRequest(BaseModel):
@@ -185,7 +194,11 @@ def root():
 @app.get("/api/health")
 def health():
     nav = grid_data()
+<<<<<<< HEAD
     return {"status": "ok", "gridLoaded": True, "gridSize": [nav["height"], nav["width"]], "candidateCount": len(candidate_records()), "routingRegion": "localized-jezero", "terrainRastersAvailable": DEM_PATH.is_file() and SLOPE_PATH.is_file(), "riskAwareRouting": True}
+=======
+    return {"status": "ok", "gridLoaded": True, "gridSize": [nav["height"], nav["width"]], "candidateCount": len(candidate_records()), "routingRegion": "localized-jezero"}
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
 
 @app.get("/api/missions")
@@ -230,6 +243,7 @@ def cell(row: int, col: int):
     return {"row": row, "col": col, "cost": value, "traversable": value != 255, "interpretation": "blocked/unknown" if value == 255 else ("higher model cost" if value == 5 else "lower model cost")}
 
 
+<<<<<<< HEAD
 @lru_cache(maxsize=1)
 def terrain_samples() -> dict:
     """Sample supplied 1 m rasters at 5 m navigation-cell centers; no extrapolation."""
@@ -310,6 +324,56 @@ def resource_assessment(outbound: dict, returning: dict, request: RouteRequest) 
     oxygen=total*0.70; battery=total*0.45; usable=max(0,request.evaBudgetMinutes-request.returnReserveMinutes)
     ok=total<=usable and oxygen<=100 and battery<=100
     return {"estimatedRoundTripMinutes":round(total,1),"outboundMinutes":out_min,"returnMinutes":back_min,"scienceMinutes":round(science_min,1),"evaBudgetMinutes":request.evaBudgetMinutes,"returnReserveMinutes":request.returnReserveMinutes,"usableMinutesBeforeReserve":round(usable,1),"estimatedOxygenUsePercent":round(oxygen,1),"estimatedBatteryUsePercent":round(battery,1),"withinPlanningBudget":ok,"status":"within illustrative budget" if ok else "exceeds illustrative budget","assumptions":["22 m/min walking speed (illustrative)","0.70 oxygen percentage points/minute (illustrative)","0.45 battery percentage points/minute (illustrative)","Not actual spacesuit telemetry or validated life-support modelling"]}
+=======
+def astar(costs: list[list[int]], source: tuple[int, int], target: tuple[int, int], objective: Literal["shortest", "lower"]) -> list[tuple[int, int]] | None:
+    """Admissible octile heuristic; diagonal moves cannot cut blocked corners."""
+    cardinal = 5.0
+    diagonal = 5.0 * math.sqrt(2)
+    def heuristic(node: tuple[int, int]) -> float:
+        dr, dc = abs(node[0] - target[0]), abs(node[1] - target[1])
+        return cardinal * (max(dr, dc) - min(dr, dc)) + diagonal * min(dr, dc)
+    queue = [(heuristic(source), 0.0, source)]
+    previous: dict[tuple[int, int], tuple[int, int]] = {}
+    best = {source: 0.0}
+    while queue:
+        _, current_g, current = heapq.heappop(queue)
+        if current_g > best.get(current, float("inf")) + 1e-7:
+            continue
+        if current == target:
+            path = [current]
+            while path[-1] != source:
+                path.append(previous[path[-1]])
+            return path[::-1]
+        r, c = current
+        for dr in (-1, 0, 1):
+            for dc in (-1, 0, 1):
+                if not (dr or dc):
+                    continue
+                nr, nc = r + dr, c + dc
+                if not is_open(nr, nc, costs):
+                    continue
+                if dr and dc and (not is_open(r + dr, c, costs) or not is_open(r, c + dc, costs)):
+                    continue
+                length = diagonal if dr and dc else cardinal
+                movement_cost = length if objective == "shortest" else length * costs[nr][nc]
+                new_cost = current_g + movement_cost
+                neighbor = (nr, nc)
+                if new_cost + 1e-7 < best.get(neighbor, float("inf")):
+                    best[neighbor] = new_cost
+                    previous[neighbor] = current
+                    heapq.heappush(queue, (new_cost + heuristic(neighbor), new_cost, neighbor))
+    return None
+
+
+def route_stats(path: list[tuple[int, int]], kind: Literal["shortest", "lower"], costs: list[list[int]]) -> dict:
+    lengths = [5 * (math.sqrt(2) if a[0] != b[0] and a[1] != b[1] else 1) for a, b in zip(path, path[1:])]
+    distance = sum(lengths)
+    weighted = sum(length * costs[p[0]][p[1]] for length, p in zip(lengths, path[1:]))
+    high_length = sum(length for length, p in zip(lengths, path[1:]) if costs[p[0]][p[1]] == 5)
+    # Simple number of changes of heading; not independently measured waypoints.
+    changes = sum(((b[0]-a[0], b[1]-a[1]) != (c[0]-b[0], c[1]-b[1])) for a, b, c in zip(path, path[1:], path[2:]))
+    return {"id": kind, "label": "Shortest route" if kind == "shortest" else "Lower-terrain-cost route", "geometry": [{"row": r, "col": c} for r, c in path], "metrics": {"distanceMeters": round(distance, 2), "estimatedMinutes": round(distance / ESTIMATED_WALK_M_PER_MIN, 1), "traversalCost": round(weighted, 2), "highCostExposurePercent": round(high_length / distance * 100, 1) if distance else 0.0, "waypoints": changes}, "dataSources": ["NASA-derived local Jezero navigation grid", "MarsPath derived 1/5/255 terrain cost model"], "modelNotice": "Simulated travel, not safety-certified navigation"}
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
 
 @app.post("/api/routes/generate")
@@ -359,7 +423,11 @@ def generate_routes(request: RouteRequest):
         stops.append({"id": identifier, "name": record["name"], "point": point.model_dump()})
     targets = [(s["point"]["row"], s["point"]["col"]) for s in stops] + [destination]
     routes = []
+<<<<<<< HEAD
     for kind in ("shortest", "lower", "balanced"):
+=======
+    for kind in ("shortest", "lower"):
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
         path = [origin]
         legs = []
         for target in targets:
@@ -373,6 +441,7 @@ def generate_routes(request: RouteRequest):
             result = route_stats(path, kind, costs)
             result["scienceStops"] = stops
             result["legs"] = legs
+<<<<<<< HEAD
             return_path = astar(costs, destination, origin, kind)
             if return_path is not None:
                 returning = route_stats(return_path, kind, costs)
@@ -382,6 +451,12 @@ def generate_routes(request: RouteRequest):
     if not routes:
         raise HTTPException(404, detail={"code": "UNREACHABLE", "message": "No traversable route connects the supplied cells"})
     return {"status": "success", "source": "api", "region": "localized-jezero", "objective": request.objective, "start": start.model_dump(), "startMode": request.startMode, "startResolution": start_resolution, "destination": request.destination.model_dump(), "candidateId": request.candidateId, "routes": routes, "notices": ["Model-based routes over supplied local rasters; not verified EVA safety corridors", "Travel time uses illustrative 22 m/min walking speed", "Balanced route uses slope samples; missing samples receive an uncertainty penalty", "No live Mars position, radiation, dust, weather or astronaut telemetry is connected", "Resource estimates are simulations, not spacesuit consumption models"]}
+=======
+            routes.append(result)
+    if not routes:
+        raise HTTPException(404, detail={"code": "UNREACHABLE", "message": "No traversable route connects the supplied cells"})
+    return {"status": "success", "source": "api", "region": "localized-jezero", "objective": request.objective, "start": start.model_dump(), "startMode": request.startMode, "startResolution": start_resolution, "destination": request.destination.model_dump(), "candidateId": request.candidateId, "routes": routes, "notices": ["This is a model-based route over a derived grid, not a verified EVA safety corridor", "Travel time uses an illustrative 22 meters/minute assumption", "Routing does not incorporate live radiation or atmospheric data"]}
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
 
 def distance_to_segment(px: float, py: float, ax: float, ay: float, bx: float, by: float) -> float:

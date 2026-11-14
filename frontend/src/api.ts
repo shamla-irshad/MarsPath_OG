@@ -20,8 +20,13 @@ export async function getCell(p:Point):Promise<{cost:number;traversable:boolean}
 export async function resolveManualStart(coords:MarsCoordinates):Promise<{start:Point;snapDistanceMeters:number;terrainCost:number;crs:string;note:string}>{
  return json(`${URL_BASE}/api/mars/resolve-start`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(coords)});
 }
+<<<<<<< HEAD
 export async function planRoutes(destination:Point,candidateId:string|null,startMode:StartMode,startCoordinates?:MarsCoordinates,scienceStopIds:string[]=[],evaBudgetMinutes=90,scienceStopMinutes=10,returnReserveMinutes=15):Promise<RouteResponse>{
  return json(`${URL_BASE}/api/routes/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({missionId:'rover-navigation-jezero',objective:'Risk-aware Marswalk planning',candidateId,scienceStopIds,startMode,evaBudgetMinutes,scienceStopMinutes,intermediateScienceStopMinutes:10,returnReserveMinutes,...(startMode==='manual'?{startCoordinates}:{}),destination})});
+=======
+export async function planRoutes(destination:Point,candidateId:string|null,startMode:StartMode,startCoordinates?:MarsCoordinates,scienceStopIds:string[]=[]):Promise<RouteResponse>{
+ return json(`${URL_BASE}/api/routes/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({missionId:'rover-navigation-jezero',objective:'Rover Navigation',candidateId,scienceStopIds,startMode,...(startMode==='manual'?{startCoordinates}:{}),destination})});
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 }
 export async function verifyDeviation(position:Point,route:Point[],corridorMeters=20){return json<{distanceFromRouteMeters:number;offRoute:boolean}>(`${URL_BASE}/api/navigation/deviation`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({position,route,corridorMeters,accuracyMeters:0})});}
 // Consistent Mars spherical equirectangular projection: ESRI:103885, R=3396190 m.

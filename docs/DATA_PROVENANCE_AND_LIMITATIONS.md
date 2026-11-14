@@ -16,7 +16,11 @@ Original full-precision GeoJSON: `backend/data/gis/backend_original/jezero_candi
 
 Three candidate representative point locations (`JEZERO_A/B/C`) fall within the local cost grid on cells classified 1 (traversable lower model cost). The backend converts provided Mars lon/lat using the documented projection and computes routes to these representative cells.
 
+<<<<<<< HEAD
 The CSV supplies candidate mean/max slope, elevation and relief statistics. These are **polygon summaries**, not aligned per-cell slope or elevation maps. The updated balanced A* objective samples the supplied 1 m slope raster at 5 m navigation-cell centers and applies an illustrative slope penalty. The legacy shortest and lower-terrain-cost objectives remain available. Raster product provenance and the documented grid/raster registration caveat remain unresolved; do not treat this slope-weighted route as a verified EVA corridor.
+=======
+The CSV supplies candidate mean/max slope, elevation and relief statistics. These are **polygon summaries**, not aligned per-cell slope or elevation maps. The backend does **not** use an independent slope raster in A*.
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 
 `1` and `5` are *relative traversal-cost classes*, not raw slope degrees or measured energy use. `255` denotes blocked or unknown grid cells. Do not claim verified obstacle safety from these classes.
 
@@ -41,7 +45,11 @@ All three sample-site coordinates are beyond the local 2 km navigation grid. Sep
 - **No Mars GPS** or astronaut sensor input. Navigation position is simulated or manually supplied.
 - **No live environmental telemetry** (temperature, wind, pressure, dust, radiation) or certified EVA thresholds.
 - Supplied 1 m DEM and slope rasters, derived samples and a coarse visor mesh are included for the local Jezero area. Original product provenance remains awaiting GIS-team confirmation. There is no camera-matched terrain localization.
+<<<<<<< HEAD
 - Routes are **project-model results**. The 22 m/minute travel speed, slope penalty, oxygen rate and battery rate are illustrative assumptions.
+=======
+- Routes are **project-model results**, and the 22m/minute travel speed is an illustrative assumption.
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 - Candidate polygons exported to `frontend/public/data/gis` are simplified for display. Exact candidate properties and original geometry remain in backend files.
 - NASA product provenance should be checked against original NASA PDS/HiRISE observations before claiming exact instrument/pixel dates.
 

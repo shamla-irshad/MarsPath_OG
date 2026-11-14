@@ -10,8 +10,13 @@ export type Candidate={
   geometry:GeoShape; sources:string[]; localGridPoint?:Point|null; localCellCost?:number|null;
   coordinateVerified?:boolean|null; routingSupported?:boolean;routingNote?:string;
 };
+<<<<<<< HEAD
 export type RouteKind='shortest'|'lower'|'balanced';
 export type Route={scienceStops?:{id:string;name:string;point:Point}[];legs?:{distanceMeters:number;estimatedMinutes:number}[];id:RouteKind;label:string;geometry:Point[];metrics:{distanceMeters:number;estimatedMinutes:number;traversalCost:number;highCostExposurePercent:number;waypoints:number;averageSlopeDegrees?:number|null;maximumSlopeDegrees?:number|null;unknownSlopeDistanceMeters?:number};returnRoute?:{geometry:Point[];metrics:{distanceMeters:number;estimatedMinutes:number}};resourceAssessment?:{estimatedRoundTripMinutes:number;outboundMinutes:number;returnMinutes:number;scienceMinutes:number;evaBudgetMinutes:number;returnReserveMinutes:number;usableMinutesBeforeReserve:number;estimatedOxygenUsePercent:number;estimatedBatteryUsePercent:number;withinPlanningBudget:boolean;status:string;assumptions:string[]};dataSources:string[];modelNotice?:string};
+=======
+export type RouteKind='shortest'|'lower';
+export type Route={scienceStops?:{id:string;name:string;point:Point}[];legs?:{distanceMeters:number;estimatedMinutes:number}[];id:RouteKind;label:string;geometry:Point[];metrics:{distanceMeters:number;estimatedMinutes:number;traversalCost:number;highCostExposurePercent:number;waypoints:number};dataSources:string[];modelNotice?:string};
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 export type RouteResponse={source:string;status:string;start:Point;startMode:StartMode;startResolution?:{start:Point;snapDistanceMeters:number;terrainCost:number}|null;destination:Point;routes:Route[];notices?:string[]};
 export type LayerFlags={imagery:boolean;candidates:boolean;labels:boolean;grid:boolean;cost:boolean;blocked:boolean;route:boolean;alternative:boolean};
 export const INITIAL_LAYERS:LayerFlags={imagery:true,candidates:true,labels:true,grid:false,cost:false,blocked:false,route:true,alternative:false};

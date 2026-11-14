@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 ## 2026-11-14 — Gap-focused navigation upgrade
 
 - Added slope-aware balanced routing, route slope metrics, independent return paths, illustrative EVA resource assessment, configurable return reserve, and updated route comparison/summary UI. See `MARSPATH_GAP_UPGRADE_2026-11-14.md` for assumptions and limitations.
 
+=======
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
 # Changelog
 
 ## 2026-11 — Interface redesign and repository cleanup

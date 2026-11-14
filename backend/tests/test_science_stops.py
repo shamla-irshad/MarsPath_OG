@@ -7,7 +7,11 @@ class ScienceStopTests(unittest.TestCase):
         records = {c['id']: c for c in candidate_records()}
         end = records['JEZERO_C']['localGridPoint']
         response = generate_routes(RouteRequest(destination=end, candidateId='JEZERO_C', scienceStopIds=['JEZERO_A','JEZERO_B']))
+<<<<<<< HEAD
         self.assertEqual(len(response['routes']), 3)
+=======
+        self.assertEqual(len(response['routes']), 2)
+>>>>>>> e40c8077cf500f1707a055744bc00b935020404b
         for route in response['routes']:
             points = route['geometry']
             first = points.index(records['JEZERO_A']['localGridPoint'])
