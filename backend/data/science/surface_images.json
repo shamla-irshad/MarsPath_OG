@@ -1,0 +1,21 @@
+{
+  "images": [
+    {
+      "id": "PIA23727",
+      "missionId": "rover-navigation-jezero",
+      "title": "Perseverance's first high-resolution Mastcam-Z panorama",
+      "mission": "Mars 2020 Perseverance",
+      "instrument": "Mastcam-Z right-eye zoom camera, 110 mm mosaic",
+      "sol": 4,
+      "observationDate": "2021-02-22",
+      "productId": "PIA23727",
+      "location": "Octavia E. Butler landing site, Jezero Crater",
+      "imageUrl": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia23/pia23727/PIA23727.jpg?crop=faces%2Cfocalpoint&fit=clip&h=1500&w=2500",
+      "sourceUrl": "https://science.nasa.gov/photojournal/perseverances-mastcam-z-first-high-resolution-panorama/",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "matchLevel": "regional_context",
+      "matchedCandidateIds": [],
+      "note": "NASA's documented Sol 4 panorama of the rover landing site. Its camera position has not been shown to match any MarsPath candidate marker or destination. The mosaic is a preliminary calibrated natural-color composite."
+    }
+  ]
+}

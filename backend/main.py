@@ -6,6 +6,7 @@ All grid coordinates reference the LOCAL Jezero raster, never global Mars.
 """
 from __future__ import annotations
 from sessions import router as sessions_router
+from science import router as science_router
 
 import heapq
 import json
@@ -30,6 +31,7 @@ ESTIMATED_WALK_M_PER_MIN = 22.0  # modeling assumption, not certified EVA speed
 
 app = FastAPI(title="MarsPath API", version="2.0.0", description="NASA-derived Mars GIS and local A* routing research prototype")
 app.include_router(past_life_router)
+app.include_router(science_router)
 origins = [s.strip() for s in os.getenv("MARSPATH_CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if s.strip()]
 app.include_router(sessions_router)
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_origin_regex=r"http://(?:localhost|127\.0\.0\.1):(?:517[3-9]|518[0-9]|519[0-9])", allow_methods=["GET", "POST", "PATCH"], allow_headers=["Content-Type"])
